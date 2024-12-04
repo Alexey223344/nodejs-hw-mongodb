@@ -22,12 +22,11 @@ export const updateContact = async (contactId, contact, options = {}) => {
     ...options,
   });
 
-  return !rawResult || !rawResult.value
-    ? null
-    : {
-        contact: rawResult.value,
-        isNew: Boolean(rawResult?.lastErrorObject?.upserted),
-      };
+  if (!rawResult || !rawResult.value) return null;
+  return {
+    contact: rawResult.value,
+    isNew: Boolean(rawResult?.lastErrorObject.upserted),
+  };
 };
 
 export const deleteContact = (contactId) => {
