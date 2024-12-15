@@ -1,9 +1,33 @@
 // import createHttpError from 'http-errors';
-import { ContactsAll } from '../db/models/contact.js';
+import { ContactsAll } from "../db/models/contact.js";
+import { calcPagination } from "../utils/calcPagination.js";
 
-export const getAllContacts = async () => {
-  const contacts = await ContactsAll.find();
-  return contacts;
+export const getAllContacts = async ({
+  page,
+  perPage,
+  sortBy,
+  sortOrder,
+  filter = {},
+}) => {
+  const skip = page > 0 ? (page - 1) * perPage : 0;
+  const contactsAllQuery = ContactsAll.find();
+  if (filter.contactType) {
+    contactsAllQuery.where("contactType").equals(filter.contactType);
+  }
+  if (filter.isFavorited === "boolean") {
+    contactsAllQuery.where("isFavorited").equals(filter.isFavorited);
+  }
+  const [countContacts, contacts] = await Promise.all([
+    ContactsAll.find().merge(contactsAllQuery).countDocuments(),
+    contactsAllQuery
+      .skip(skip)
+      .limit(perPage)
+      .sort({ [sortBy]: sortOrder })
+      .exec(),
+  ]);
+
+  const paramsPagination = calcPagination(countContacts, page, perPage);
+  return {data:contacts, ...paramsPagination};
 };
 
 export const getContactById = async (contactId) => {
