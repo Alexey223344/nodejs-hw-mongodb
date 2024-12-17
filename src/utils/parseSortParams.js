@@ -1,17 +1,17 @@
 import { SORT_ORDER } from "../constants/constants.js";
 
 const parseSortBy = (sortBy) => {
-  const keys = [
+  const keysContacts = [
     "_id",
     "name",
     "phoneNumber",
     "email",
-    "isFavorite",
+    "isFavourite",
     "contactType",
     "createdAt",
     "updatedAt",
   ];
-  if (keys.includes(sortBy)) return sortBy;
+  if (keysContacts.includes(sortBy)) return sortBy;
   return "name";
 };
 
