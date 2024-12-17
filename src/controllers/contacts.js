@@ -53,7 +53,7 @@ export const createContactController = async (req, res) => {
   });
 };
 
-export const updateContactController = async (req, res, next) => {
+export const updateContactController = async (req, res) => {
   const { contactId } = req.params;
   const contact = await updateContact(contactId, req.body);
   if (!contact) {
