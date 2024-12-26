@@ -1,4 +1,10 @@
-import { createContact, deleteContact, getAllContacts, getContactById, updateContact } from "../services/contacts.js";
+import {
+  createContact,
+  deleteContact,
+  getAllContacts,
+  getContactById,
+  updateContact,
+} from "../services/contacts.js";
 import { parsePaginationParams } from "../utils/parsePaginationParams.js";
 import { parseSortParams } from "../utils/parseSortParams.js";
 import { parseFilterParams } from "../utils/parseFilterParams.js";
@@ -8,69 +14,75 @@ export const getContactsController = async (req, res) => {
   const { page, perPage } = parsePaginationParams(req.query);
   const { sortBy, sortOrder } = parseSortParams(req.query);
   const filter = parseFilterParams(req.query);
+  const { user } = req;
   const contacts = await getAllContacts({
     page,
     perPage,
     sortBy,
     sortOrder,
     filter,
+    user,
   });
-  if (!contacts) throw createHttpError(404, "contact not found ");
+  if (!contacts) throw createHttpError(404, "Контакт не знайдено");
   res.status(200).json({
     status: 200,
-    message: "Successgully found contacts!",
+    message: "Успішно знайдені контакти!",
     data: contacts,
   });
 };
 
 export const getContactByIdController = async (req, res) => {
   const { contactId } = req.params;
-  const contact = await getContactById(contactId);
+  const { user } = req;
+  const contact = await getContactById(contactId, user);
   if (!contact) {
-    throw createHttpError(404, "Contact not found");
+    throw createHttpError(404, "Контакт не знайдено");
   }
 
   res.status(200).json({
     status: 200,
-    message: `Successfully found contact with id ${contactId}!`,
+    message: `Успішно знайдено контакт з Id ${contactId}!`,
     data: contact,
   });
 };
 
 export const createContactController = async (req, res) => {
-  const contact = {
-    name: req.body.name,
-    phoneNumber: req.body.phoneNumber,
-    email: req.body.email,
-    isFavourite: req.body.isFavourite,
-    contactType: req.body.contactType,
-  };
-  const result = await createContact(contact);
+  if (!req.body || Object.keys(req.body).length === 0) {
+    throw createHttpError(400, "Відсутнє тіло запиту");
+  }
+  const { user } = req;
+  const result = await createContact({ ...req.body, userId: user._id });
+  if (!result) throw createHttpError(404, "Відправлене для створення контакту");
+
   res.status(201).json({
     status: 201,
-    message: "Successfully created a contact!",
+    message: "Успішно створено контакт!",
     data: result,
   });
 };
 
-export const updateContactController = async (req, res) => {
+export const updateContactController = async (req, res, next) => {
   const { contactId } = req.params;
-  const contact = await updateContact(contactId, req.body);
+  const { user } = req;
+  const contact = await updateContact(contactId, user, req.body);
+
   if (!contact) {
-    throw createHttpError(404, "Contact not found");
+    next(createHttpError(404, "Контакт не знайдено"));
+    return;
   }
 
   res.status(200).json({
     status: 200,
-    message: "Successfully patched a contact!",
-    data: contact,
+    message: "Успішно виправлено контакт!",
+    data: contact.contact,
   });
 };
 
 export const deleteContactController = async (req, res) => {
   const { contactId } = req.params;
-  const result = await deleteContact(contactId);
-  if (!result) throw createHttpError(404, "Contact not found");
+  const { user } = req;
+  const result = await deleteContact(contactId, user);
+  if (!result) throw createHttpError(404, "Контакт не знайдено");
 
   res.status(204).end();
 };
