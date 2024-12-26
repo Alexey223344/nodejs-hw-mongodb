@@ -1,15 +1,15 @@
 import createHttpError from "http-errors";
+import { User } from "../db/models/userModel.js";
 import bcrypt from "bcrypt";
 import { randomBytes } from "crypto";
-import { User } from "../db/models/userModel.js";
 import { Session } from "../db/models/session.js";
 import { TWENTY_MINUTES, TWENTY_DAY } from "../constants/constants.js";
 
 export const registerUser = async (payload) => {
   const user = await User.findOne({ email: payload.email });
   if (user) throw createHttpError(409, "Email використовується!");
-  const bcryptPassword = await bcrypt.hash(payload.password, 10);
-  return await User.create({ ...payload, password: bcryptPassword });
+  const bcryptsPassword = await bcrypt.hash(payload.password, 10);
+  return await User.create({ ...payload, password: bcryptsPassword });
 };
 
 export const loginUser = async (payload) => {
@@ -19,8 +19,8 @@ export const loginUser = async (payload) => {
       401,
       "Помилка автентифікації. Будь ласка, перевірте свої облікові дані.",
     );
-  const passwordUser = await bcrypt.compare(payload.password, user.password);
-  if (!passwordUser)
+  const isPasswordUser = await bcrypt.compare(payload.password, user.password);
+  if (!isPasswordUser)
     throw createHttpError(
       401,
       "Помилка автентифікації. Будь ласка, перевірте свої облікові дані.",
@@ -56,9 +56,9 @@ export const refreshSessionUser = async ({ sessionId, refreshToken }) => {
 
   if (!session) throw createHttpError(401, "Сессію не знайдено!");
 
-  const isSesionToken = new Date() > new Date(session.refreshTokenValidUntil);
+  const isSesionTokenEnd = new Date() > new Date(session.refreshTokenValidUntil);
 
-  if (isSesionToken) throw createHttpError(401, "Термін дії токена закінчився");
+  if (isSesionTokenEnd) throw createHttpError(401, "Термін дії токена закінчився");
 
   const newSession = createSession();
   await Session.deleteOne({ _id: sessionId, refreshToken: refreshToken });

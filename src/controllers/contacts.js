@@ -46,13 +46,13 @@ export const getContactByIdController = async (req, res) => {
   });
 };
 
-export const createContactController = async (req, res) => {
+export const createContactController = async (req, res, next) => {
   if (!req.body || Object.keys(req.body).length === 0) {
     throw createHttpError(400, "Відсутнє тіло запиту");
   }
   const { user } = req;
   const result = await createContact({ ...req.body, userId: user._id });
-  if (!result) throw createHttpError(404, "Відправлене для створення контакту");
+  if (!result) next(createHttpError(404, "Відправлене для створення контакту"));
 
   res.status(201).json({
     status: 201,
@@ -74,15 +74,15 @@ export const updateContactController = async (req, res, next) => {
   res.status(200).json({
     status: 200,
     message: "Успішно виправлено контакт!",
-    data: contact.contact,
+    data: contact,
   });
 };
 
-export const deleteContactController = async (req, res) => {
+export const deleteContactController = async (req, res, next) => {
   const { contactId } = req.params;
   const { user } = req;
   const result = await deleteContact(contactId, user);
-  if (!result) throw createHttpError(404, "Контакт не знайдено");
+  if (!result) next( createHttpError(404, "Контакт не знайдено"));
 
   res.status(204).end();
 };

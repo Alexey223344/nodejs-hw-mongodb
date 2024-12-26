@@ -2,7 +2,7 @@ import createHttpError from "http-errors";
 import { Session } from "../db/models/session.js";
 import { User } from "../db/models/userModel.js";
 
-export const authVerification = async (req, res, next) => {
+export const verification = async (req, res, next) => {
   const authHeader = req.get("Authorization");
   if (!authHeader) {
     next(createHttpError(401, "Відсутній заголовок авторизації"));

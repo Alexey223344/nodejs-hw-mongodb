@@ -27,7 +27,7 @@ export const setupServer = () => {
       message: "Hello!",
     });
   });
-  app.use(allRouters());
+  app.use(allRouters);
 
   // app.use("/contacts", contactsRouter);
 

@@ -2,9 +2,9 @@ import { Router } from "express";
 import express from "express";
 import { ctrlWrapper } from "../utils/ctrlWrapper.js";
 import {
+    loginUserController,
   logoutUserController,
   refreshSessionController,
-  loginUserController,
   registerController,
 } from "../controllers/authContacts.js";
 import { validateBody } from "../middlewares/validateBody.js";
