@@ -1,5 +1,5 @@
 import createHttpError from "http-errors";
-import { User } from "../db/models/userModel.js";
+import { User } from "../db/models/user.js";
 import bcrypt from "bcrypt";
 import { randomBytes } from "crypto";
 import { Session } from "../db/models/session.js";
@@ -56,9 +56,11 @@ export const refreshSessionUser = async ({ sessionId, refreshToken }) => {
 
   if (!session) throw createHttpError(401, "Сессію не знайдено!");
 
-  const isSesionTokenEnd = new Date() > new Date(session.refreshTokenValidUntil);
+  const isSesionTokenEnd =
+    new Date() > new Date(session.refreshTokenValidUntil);
 
-  if (isSesionTokenEnd) throw createHttpError(401, "Термін дії токена закінчився");
+  if (isSesionTokenEnd)
+    throw createHttpError(401, "Термін дії токена закінчився");
 
   const newSession = createSession();
   await Session.deleteOne({ _id: sessionId, refreshToken: refreshToken });

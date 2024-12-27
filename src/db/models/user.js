@@ -15,8 +15,8 @@ const userSchema = new Schema(
   { timestamps: true, versionKey: false },
 );
 
-userSchema.methods.toJson = function () {
-  const obj = this.toObjects();
+userSchema.methods.toJSON = function () {
+  const obj = this.toObject();
   delete obj.password;
   return obj;
 };
