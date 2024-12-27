@@ -1,7 +1,7 @@
 import createHttpError from "http-errors";
 import { ALL_ROLES } from "../constants/constants.js";
 
-export const allRoles = (...roles) => {
+export const roles = (...roles) => {
   return async (req, res, next) => {
     const { user } = req;
     if (!user) {

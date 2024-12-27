@@ -15,7 +15,7 @@ export const getAllContacts = async ({
   if (filter.contactType) {
     contactsQuery.where("contactType").equals(filter.contactType);
   }
-  if (filter.isFavourite === "boolean") {
+  if (typeof filter.isFavourite === "boolean") {
     contactsQuery.where("isFavourite").equals(filter.isFavourite);
   }
   const [countContacts, contacts] = await Promise.all([
@@ -74,7 +74,7 @@ export const updateContact = async (contactId, contactData, user) => {
 // };
 
 export const deleteContact = (contactId, user) => {
-  return ContactsAll.findByIdAndDelete({
+  return ContactsAll.findOneAndDelete({
     _id: contactId,
     userId: user._id,
   });
