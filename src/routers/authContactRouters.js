@@ -2,13 +2,20 @@ import { Router } from "express";
 import express from "express";
 import { ctrlWrapper } from "../utils/ctrlWrapper.js";
 import {
-    loginUserController,
+  loginUserController,
   logoutUserController,
   refreshSessionController,
   registerController,
+  reqResetEmailController,
+  resResetPasswordController,
 } from "../controllers/authContacts.js";
 import { validateBody } from "../middlewares/validateBody.js";
-import { registerSchema, loginSchema } from "../validation/authContacts.js";
+import {
+  registerSchema,
+  loginSchema,
+  reqResetEmailSchema,
+  resResetPasswordSchema,
+} from "../validation/authContacts.js";
 
 const jsonParser = express.json();
 const router = Router();
@@ -28,5 +35,19 @@ router.post(
 
 router.post("/refresh", ctrlWrapper(refreshSessionController));
 router.post("/logout", ctrlWrapper(logoutUserController));
+
+router.post(
+  "/reset-email",
+  jsonParser,
+  validateBody(reqResetEmailSchema),
+  ctrlWrapper(reqResetEmailController),
+);
+
+router.post(
+  "reset-password",
+  jsonParser,
+  validateBody(resResetPasswordSchema),
+  ctrlWrapper(resResetPasswordController),
+);
 
 export default router;

@@ -5,6 +5,8 @@ import {
   logoutUser,
   refreshSessionUser,
   registerUser,
+  resetPassword,
+  reqResetEmail
 } from "../services/authServices.js";
 
 export const registerController = async (req, res, next) => {
@@ -67,3 +69,22 @@ export const logoutUserController = async (req, res) => {
 
   res.status(204).end();
 };
+
+export const reqResetEmailController = async (req, res) => {
+  await reqResetEmail(req.body.email);
+  req.status(200).json({
+    status: 200,
+    message: "Імейл зі скиданням паролю успішно відправлено.",
+    data: {},
+  });
+};
+
+export const resResetPasswordController = async (req, res) => {
+  await resetPassword(req.body);
+  req.status(200).json({
+    status: 200,
+    message: "Пароль успішно скинуто.",
+    data: {},
+  });
+};
+
