@@ -17,6 +17,7 @@ import { ctrlWrapper } from "../utils/ctrlWrapper.js";
 import { verification } from "../middlewares/verification.js";
 import { roles } from "../middlewares/roles.js";
 import { ALL_ROLES } from "../constants/constants.js";
+import { download } from "../middlewares/download.js";
 
 const jsonParser = express.json();
 
@@ -42,6 +43,7 @@ router.post(
   verification,
   roles(ALL_ROLES.ADMIN, ALL_ROLES.USER),
   jsonParser,
+  download.single("photo"),
   validateBody(createContactSchema),
   ctrlWrapper(createContactController),
 );
@@ -52,6 +54,7 @@ router.patch(
   roles(ALL_ROLES.ADMIN, ALL_ROLES.USER),
   isValidId,
   jsonParser,
+  download.single("photo"),
   validateBody(updateContactSchema),
   ctrlWrapper(updateContactController),
 );

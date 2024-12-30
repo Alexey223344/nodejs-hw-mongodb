@@ -12,7 +12,6 @@ const contactSchema = new Schema(
     },
     email: {
       type: String,
-      
     },
     isFavourite: {
       type: Boolean,
@@ -28,6 +27,10 @@ const contactSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "users",
       required: true,
+    },
+    photo: {
+      type: String,
+      default: null,
     },
   },
   {
