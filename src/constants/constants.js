@@ -26,8 +26,8 @@ export const SMTP = {
 };
 
 export const CLOUDINARY = {
-  CLOUDINARY_NAME: "CLOUDINARY_NAME",
-  API_KEY: "API_NAME",
+  CLOUD_NAME: "CLOUD_NAME",
+  API_KEY: "API_KEY",
   API_SECRET: "API_SECRET",
 };
 

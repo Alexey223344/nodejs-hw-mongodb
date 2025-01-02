@@ -1,11 +1,11 @@
 import cloudinary from "cloudinary";
-import * as fs from "../constants/constants.js";
+import * as fs from "fs/promises";
 import { env } from "./env.js";
 import { CLOUDINARY } from "../constants/constants.js";
 
 cloudinary.v2.config({
   secure: true,
-  cloud_name: env(CLOUDINARY.CLOUDINARY_NAME),
+  cloud_name: env(CLOUDINARY.CLOUD_NAME),
   api_key: env(CLOUDINARY.API_KEY),
   api_secret: env(CLOUDINARY.API_SECRET),
 });
