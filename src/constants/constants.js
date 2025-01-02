@@ -1,7 +1,5 @@
 import path from "path";
 
-
-
 export const SORT_ORDER = {
   ASC: "asc",
   DESC: "desc",
@@ -10,6 +8,11 @@ export const SORT_ORDER = {
 export const TWENTY_MINUTES = 20 * 60 * 1000;
 export const TWENTY_DAY = 20 * 24 * 60 * 1000;
 export const ALL_ROLES = {
+  ADMIN: "admin",
+  USER: "user",
+};
+
+export const ROLES = {
   ADMIN: "admin",
   USER: "user",
 };
@@ -30,4 +33,4 @@ export const CLOUDINARY = {
 
 export const TEMPLATE_DIR = path.join(process.cwd(), "src", "templates");
 export const TEMP_UPLOAD_DIR = path.join(process.cwd(), "src", "temp");
-export const UPLOAD_DIR = path.join(process.cwd(), "upload");
+export const UPLOAD_DIR = path.join(process.cwd(), "uploads");
