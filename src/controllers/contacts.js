@@ -47,12 +47,14 @@ export const getContactByIdController = async (req, res) => {
   });
 };
 
-export const createContactController = async (req, res, next) => {
+export const createContactController = async (req, res) => {
+  // console.log(req.file);
   const photo = req.file;
   let photoUrl;
   if (photo) {
     const resultPhoto = await downloadCloudinary(req.file.path);
     photoUrl = resultPhoto;
+    
   }
   if (!req.body || Object.keys(req.body).length === 0) {
     throw createHttpError(400, "Відсутнє тіло запиту");
@@ -63,7 +65,7 @@ export const createContactController = async (req, res, next) => {
     userId: user._id,
     photo: photoUrl,
   });
-  if (!result) next(createHttpError(404, "Відправлене для створення контакту"));
+  if (!result) throw createHttpError(404, "Відправлене для створення контакту");
 
   res.status(201).json({
     status: 201,
@@ -84,12 +86,12 @@ export const updateContactController = async (req, res, next) => {
 
     photoUrl = result;
   }
-  const resultUpdate = await updateContact(contactId, user, {
+  const result = await updateContact(contactId, user, {
     ...req.body,
     photo: photoUrl,
   });
 
-  if (!resultUpdate) {
+  if (!result) {
     next(createHttpError(404, "контакт не знайдено"));
     return;
   }
@@ -97,7 +99,7 @@ export const updateContactController = async (req, res, next) => {
   res.status(200).json({
     status: 200,
     message: "Успішно виправлено контакт!",
-    data: resultUpdate,
+    data: result,
   });
 };
 
