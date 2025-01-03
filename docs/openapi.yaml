@@ -41,7 +41,7 @@ paths:
       $ref: ../swagger/paths/auth/logout.yaml
   /auth/send-reset-email:
     post:
-      $ref: ../swagger/paths/auth/requestResetEmail.yaml
+      $ref: ../swagger/paths/auth/reqResetEmail.yaml
   /auth/reset-pwd:
     post:
       $ref: ../swagger/paths/auth/resetPwd.yaml
