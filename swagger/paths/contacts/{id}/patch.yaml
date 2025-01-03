@@ -1,0 +1,73 @@
+tags:
+  - Contacts
+summary: Update contacts by id
+operationId: patchContactsById
+description: 'Update contacts by id'
+security:
+  - bearerAuth: []
+parameters:
+  - in: path
+    name: contactId
+    required: true
+    schema:
+      type: string
+      example: '64ca60e7ae7f10c77b598384'
+requestBody:
+  content:
+    multipart/form-data:
+      schema:
+        type: object
+        properties:
+          name:
+            description: 'Contacts name'
+            type: string
+            example: 'Jim Carrey'
+          phoneNumber:
+            description: 'Contacts phone number'
+            type: number
+            example: +380989887457
+          email:
+            description: 'Contacts email'
+            type: string
+            example: jimcarrey@mail.com
+          isFavourite:
+            description: 'Contacts favorute'
+            type: boolean
+            example: false
+          contactType:
+            description: 'Contact type'
+            type: string
+            enum: ['work', 'home', 'personal']
+          photo:
+            description: 'Upload to Contacts photo'
+            type: string
+            format: binary
+responses:
+  '200':
+    description: 'Update products by id'
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Successfully patched a contact!
+            data:
+              type: object
+              $ref: '../../../components/schemas/contact.yaml'
+  '400':
+    $ref: '../../../components/responses/contacts/400.yaml'
+  '401':
+    $ref: '../../../components/responses/auth/auth-401.yaml'
+  '404':
+    $ref: '../../../components/responses/contacts/404.yaml'
+  '500':
+    $ref: '../../../components/responses/500.yaml'

@@ -1,0 +1,35 @@
+type: object
+required:
+  - _id
+  - name
+  - email
+  - password
+properties:
+  _id:
+    description: 'User id'
+    type: string
+    example: 676c1cad155780ba49395352
+  name:
+    description: user full name
+    type: string
+    example: Jon Doil
+  email:
+    description: 'User email'
+    type: string
+    example: trembo@mail.com
+  password:
+    description: 'Hashed user password stored in the database'
+    type: string
+    example: '$2b$10$ehfmT7JR9ypYhpGViQeeY.IeBX46h7r8IC5S0Xl2Q6UQ2Thn49gDS'
+  role:
+    description: 'User role'
+    type: string
+    enum: ['user', 'admin']
+  createdAt:
+    description: 'Contacts createdAt'
+    type: string
+    example: '2024-05-08T16:12:14.954182'
+  updatedAt:
+    description: 'Contacts updatedAt'
+    type: string
+    example: '2024-11-30T17:19:41.576+00:00'
