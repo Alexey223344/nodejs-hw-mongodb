@@ -72,7 +72,7 @@ export const logoutUserController = async (req, res) => {
 
 export const reqResetEmailController = async (req, res) => {
   await reqResetEmail(req.body.email);
-  req.status(200).json({
+  res.status(200).json({
     status: 200,
     message: "Імейл зі скиданням паролю успішно відправлено.",
     data: {},
@@ -81,7 +81,7 @@ export const reqResetEmailController = async (req, res) => {
 
 export const resResetPasswordController = async (req, res) => {
   await resetPassword(req.body);
-  req.status(200).json({
+  res.status(200).json({
     status: 200,
     message: "Пароль успішно скинуто.",
     data: {},
