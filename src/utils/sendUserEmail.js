@@ -5,7 +5,7 @@ import createHttpError from "http-errors";
 
 const transporter = nodemeiler.createTransport({
   host: env(SMTP.SMTP_HOST),
-  poer: Number(env(SMTP.SMTP_PORT)),
+  port: Number(env(SMTP.SMTP_PORT)),
   auth: {
     user: env(SMTP.SMTP_USER),
     pass: env(SMTP.SMTP_PASSWORD),
