@@ -13,7 +13,7 @@ export const registerController = async (req, res, next) => {
   const user = await registerUser(req.body);
   res.status(201).json({
     status: 200,
-    message: "Успішно зареєстрований користувач",
+    message: "Seccessfully registered user",
     data: user,
   });
 };
@@ -30,7 +30,7 @@ export const loginUserController = async (req, res) => {
   });
   res.status(200).json({
     status: 200,
-    message: "Успішно зареєстровано користувача!",
+    message: "Successfully logged in an user!",
     data: { accessToken: session.accessToken },
   });
 };
@@ -54,7 +54,7 @@ export const refreshSessionController = async (req, res) => {
   setSession(res, session);
   res.status(200).json({
     status: 200,
-    message: "Успішно відновлено сессію",
+    message: "Successfully refreshed a session",
     data: { accessToken: session.accessToken },
   });
 };
@@ -62,7 +62,7 @@ export const refreshSessionController = async (req, res) => {
 export const logoutUserController = async (req, res) => {
   const { sessionId, refreshToken } = req.cookies;
   if (!sessionId && !refreshToken)
-    throw createHttpError(401, "Сессія не знайдена!");
+    throw createHttpError(401, "'Session not found!");
   await logoutUser(sessionId, refreshToken);
   res.clearCookie("sessionId");
   res.clearCookie("refreshToken");
@@ -74,7 +74,7 @@ export const reqResetEmailController = async (req, res) => {
   await reqResetEmail(req.body.email);
   res.status(200).json({
     status: 200,
-    message: "Імейл зі скиданням паролю успішно відправлено.",
+    message: "Reset password email has been successfully send.",
     data: {},
   });
 };
@@ -83,7 +83,7 @@ export const resResetPasswordController = async (req, res) => {
   await resetPassword(req.body);
   res.status(200).json({
     status: 200,
-    message: "Пароль успішно скинуто.",
+    message: "Password has been successfully reset.",
     data: {},
   });
 };
