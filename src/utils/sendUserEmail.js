@@ -17,6 +17,6 @@ export const sendUserEmail = async (options) => {
   if (email.rejected.length !== 0)
     throw createHttpError(
       500,
-      "Не вдалося відправити імейл, будь ласка, спробуйте пізніше.",
+      "Failed to send the email, please try again later.",
     );
 };

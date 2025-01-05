@@ -5,7 +5,7 @@ export const roles = (...roles) => {
   return async (req, res, next) => {
     const { user } = req;
     if (!user) {
-      next(createHttpError(401, "Користувача не знайдено"));
+      next(createHttpError(401, "User not found"));
       return;
     }
     const { role } = user;

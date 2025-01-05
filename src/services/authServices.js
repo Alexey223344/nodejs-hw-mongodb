@@ -19,7 +19,7 @@ import {
 
 export const registerUser = async (payload) => {
   const user = await User.findOne({ email: payload.email });
-  if (user) throw createHttpError(409, "Email використовується!");
+  if (user) throw createHttpError(409, "Email in use!");
   const bcryptsPassword = await bcrypt.hash(payload.password, 10);
   return await User.create({ ...payload, password: bcryptsPassword });
 };
@@ -29,13 +29,13 @@ export const loginUser = async (payload) => {
   if (!user)
     throw createHttpError(
       401,
-      "Помилка автентифікації. Будь ласка, перевірте свої облікові дані.",
+      "Authentication failed. Please check your credentials.",
     );
   const isPasswordUser = await bcrypt.compare(payload.password, user.password);
   if (!isPasswordUser)
     throw createHttpError(
       401,
-      "Помилка автентифікації. Будь ласка, перевірте свої облікові дані.",
+      "Authentication failed. Please check your credentials.",
     );
   await Session.deleteOne({ userId: user._id });
   const accessToken = randomBytes(30).toString("base64");
@@ -66,13 +66,13 @@ export const refreshSessionUser = async ({ sessionId, refreshToken }) => {
     refreshToken: refreshToken,
   });
 
-  if (!session) throw createHttpError(401, "Сессію не знайдено!");
+  if (!session) throw createHttpError(401, "Session not found!");
 
   const isSesionTokenEnd =
     new Date() > new Date(session.refreshTokenValidUntil);
 
   if (isSesionTokenEnd)
-    throw createHttpError(401, "Термін дії токена закінчився");
+    throw createHttpError(401, "Session token expired");
 
   const newSession = createSession();
   await Session.deleteOne({ _id: sessionId, refreshToken: refreshToken });
@@ -85,7 +85,7 @@ export const logoutUser = async (sessionId, refreshToken) => {
 
 export const reqResetEmail = async (email) => {
   const user = await User.findOne({ email });
-  if (!user) throw createHttpError(404, "Користувача не знайдено");
+  if (!user) throw createHttpError(404, "User not found");
   const resetToken = jwt.sign({ sub: user._id, email }, env("JWT_SECRET"), {
     expiresIn: "10m",
   });
@@ -104,7 +104,7 @@ export const reqResetEmail = async (email) => {
   await sendUserEmail({
     from: env(SMTP.SMTP_FROM),
     to: email,
-    subject: "Перезавантажити ваш пароль",
+    subject: "Reset you password",
     html,
   });
 };
